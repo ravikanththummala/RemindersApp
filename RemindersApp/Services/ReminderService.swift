@@ -58,4 +58,36 @@ class ReminderService {
         return request
     }
     
+    static func getRemindersBySearchTerm(_ searchTerm: String) -> NSFetchRequest<Reminder> {
+        let request = Reminder.fetchRequest()
+        request.sortDescriptors = []
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchTerm)
+        return request
+
+    }
+    
+    static func reminderByStatType(statType: ReminderStatType) -> NSFetchRequest<Reminder> {
+        let request = Reminder.fetchRequest()
+        request.sortDescriptors = []
+        
+        switch statType {
+        case .today:
+            let today = Date()
+            let tommorow = Calendar.current.date(byAdding: .day,value: 1, to: today)
+            request.predicate = NSPredicate(format: "(reminderDate >= %@) AND (reminderDate < %@)",today as NSDate, tommorow! as NSDate)
+            
+        case .all:
+            request.predicate = NSPredicate(format: "isCompleted = false")
+    
+        case .schudled:
+            request.predicate = NSPredicate(format: "(reminderDate != nil  OR reminderTime !=  nil) AND isCompleted = false")
+
+        case .completed:
+            request.predicate = NSPredicate(format: "isCompleted = true")
+        }
+        
+        return request
+
+    }
+    
 }
