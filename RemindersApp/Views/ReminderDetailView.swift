@@ -89,7 +89,15 @@ struct ReminderDetailView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") {
                         do {
-                            let _ = try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
+                            let updated = try ReminderService.updateReminder(reminder: reminder, editConfig: editConfig)
+                            
+                            if updated{
+                                // Check if we should even schudle a notification
+                                if reminder.reminderDate != nil || reminder.reminderTime != nil {
+                                    let userData = UserData(title: reminder.title, body: reminder.notes, date: reminder.reminderDate, time: reminder.reminderTime)
+                                    NotificationManager.schudleNotification(userData: userData)
+                                }
+                            }
                         }
                         catch{
                             print("Error in updating ")

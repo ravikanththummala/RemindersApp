@@ -60,13 +60,13 @@ struct HomeView: View {
                         NavigationLink {
                             ReminderListView(reminders: completedResults)
                         } label: {
-                            ReminderStatView(icon: "checkmark.circle.fill", title: "Completed",count: reminderStatValues.completeCount)
+                            ReminderStatView(icon: "checkmark.circle.fill", title: "Completed",count: reminderStatValues.completeCount,iconColor: Color.brown)
                         }
                         
                         NavigationLink {
                             ReminderListView(reminders: allResults)
                         } label: {
-                            ReminderStatView(icon: "tray.circle.fill", title: "All",count: reminderStatValues.allCount)
+                            ReminderStatView(icon: "tray.circle.fill", title: "All",count: reminderStatValues.allCount,iconColor: .gray)
                         }
                         
                     }
